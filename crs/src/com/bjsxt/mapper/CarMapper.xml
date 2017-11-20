@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+
+<mapper namespace="com.bjsxt.mapper.CarMapper">
+	<select id="selCarBy" resultType="cars">
+		select * from cars
+		<if test="c != null">
+		<where>
+			<if test="c.carnumber != null and c.carnumber !=''">
+				<bind name="c.carnumber" value="'%' + c.carnumber + '%'"/>
+				and carnumber like #{c.carnumber}
+			</if>
+			<if test="c.cartype != null and c.cartype !=''">
+				<bind name="c.cartype" value="'%' + c.cartype + '%'"/>
+				and cartype like #{c.cartype}
+			</if>
+			<if test="c.color != null and c.color !=''">
+				<bind name="c.color" value="'%' + c.color + '%'"/>
+				and color like #{c.color}
+			</if>
+			<if test="c.price != null and c.price !=''">
+				<bind name="c.price" value="'%' + c.price + '%'"/>
+				and price like #{c.price}
+			</if>
+			<if test="c.rentprice != null and c.rentprice !=''">
+				<bind name="c.rentprice" value="'%' + c.rentprice + '%'"/>
+				and rentprice like #{c.rentprice}
+			</if>
+			<if test="c.deposit != null and c.deposit !=''">
+				<bind name="c.deposit" value="'%' + c.deposit + '%'"/>
+				and deposit like #{c.deposit}
+			</if>
+			<if test="c.isrenting != null and c.isrenting !=''">
+				<bind name="c.isrenting" value="'%' + c.isrenting + '%'"/>
+				and isrenting like #{c.isrenting}
+			</if>
+			<if test="c.description != null and c.description !=''">
+				<bind name="c.description" value="'%' + c.description + '%'"/>
+				and description like #{c.description}
+			</if>
+		</where>
+		</if>
+		<if test="p != null">
+			limit #{p.start}, #{p.size}
+		</if>
+	</select>
+	<select id="carCount" resultType="int">
+		select count(*) from cars
+		<if test="c != null">
+		<where>
+			<if test="c.carnumber != null and c.carnumber !=''">
+				<bind name="c.carnumber" value="'%' + c.carnumber + '%'"/>
+				and carnumber like #{c.carnumber}
+			</if>
+			<if test="c.cartype != null and c.cartype !=''">
+				<bind name="c.cartype" value="'%' + c.cartype + '%'"/>
+				and cartype like #{c.cartype}
+			</if>
+			<if test="c.color != null and c.color !=''">
+				<bind name="c.color" value="'%' + c.color + '%'"/>
+				and color like #{c.color}
+			</if>
+			<if test="c.price != null and c.price !=''">
+				<bind name="c.price" value="'%' + c.price + '%'"/>
+				and price like #{c.price}
+			</if>
+			<if test="c.rentprice != null and c.rentprice !=''">
+				<bind name="c.rentprice" value="'%' + c.rentprice + '%'"/>
+				and rentprice like #{c.rentprice}
+			</if>
+			<if test="c.deposit != null and c.deposit !=''">
+				<bind name="c.deposit" value="'%' + c.deposit + '%'"/>
+				and deposit like #{c.deposit}
+			</if>
+			<if test="c.isrenting != null and c.isrenting !=''">
+				<bind name="c.isrenting" value="'%' + c.isrenting + '%'"/>
+				and isrenting like #{c.isrenting}
+			</if>
+			<if test="c.description != null and c.description !=''">
+				<bind name="c.description" value="'%' + c.description + '%'"/>
+				and description like #{c.description}
+			</if>
+		</where>
+		</if>
+	</select>
+	<update id="updateCar">
+		update cars
+		<if test="c != null">
+		 <set>
+		 	<if test="c.cartype != null and c.cartype !=''">
+				cartype=#{c.cartype},
+			</if>
+		 	<if test="c.color != null and c.color !=''">
+				color=#{c.color},
+			</if>
+		 	<if test="c.price != null and c.price > 0">
+				price=#{c.price},
+			</if>
+		 	<if test="c.rentprice != null and c.rentprice > 0">
+				rentprice=#{c.rentprice},
+			</if>
+		 	<if test="c.deposit != null and c.deposit > 0">
+				deposit=#{c.deposit},
+			</if>
+		 	<if test="c.isrenting != null and c.isrenting !=''">
+				isrenting=#{c.isrenting},
+			</if>
+		 	<if test="c.description != null and c.description !=''">
+				description=#{c.description},
+			</if>
+		 	<if test="c.imgpath != null and c.imgpath !=''">
+				imgpath=#{c.imgpath},
+			</if>
+		 </set>
+		 
+		<where>
+			carnumber=#{c.carnumber}
+		</where>
+		</if>
+	</update>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.bjsxt.mapper.CustMapper">
+	<select id="selCustBy" resultType="customers">
+		select * from customers
+		<if test="c != null">
+			<where>
+				<if test="c.identity != null and c.identity !=''">
+					<bind name="c.identity" value="'%' + c.identity + '%'" />
+					and identity like #{c.identity}
+				</if>
+				<if test="c.custname != null and c.custname !=''">
+					<bind name="c.custname" value="'%' + c.custname + '%'" />
+					and custname like #{c.custname}
+				</if>
+				<if test="c.sex != null and c.sex !=''">
+					<bind name="c.sex" value="'%' + c.sex + '%'" />
+					and sex like #{c.sex}
+				</if>
+				<if test="c.address != null and c.address !=''">
+					<bind name="c.address" value="'%' + c.address + '%'" />
+					and address like #{c.address}
+				</if>
+				<if test="c.phone != null and c.phone !=''">
+					<bind name="c.phone" value="'%' + c.phone + '%'" />
+					and phone like #{c.phone}
+				</if>
+				<if test="c.phone != null and c.phone !=''">
+					<bind name="c.phone" value="'%' + c.phone + '%'" />
+					and phone like #{c.phone}
+				</if>
+				<if test="c.career != null and c.career !=''">
+					<bind name="c.career" value="'%' + c.career + '%'" />
+					and career like #{c.career}
+				</if>
+			</where>
+		</if>
+		<if test="p != null">
+			limit #{p.start}, #{p.size}
+		</if>
+	</select>
+	<select id="custCount" resultType="int">
+		select count(*) from customers
+		<if test="c != null">
+			<where>
+				<if test="c.identity != null and c.identity !=''">
+					<bind name="c.identity" value="'%' + c.identity + '%'" />
+					and identity like #{c.identity}
+				</if>
+				<if test="c.custname != null and c.custname !=''">
+					<bind name="c.custname" value="'%' + c.custname + '%'" />
+					and custname like #{c.custname}
+				</if>
+				<if test="c.sex != null and c.sex !=''">
+					<bind name="c.sex" value="'%' + c.sex + '%'" />
+					and sex like #{c.sex}
+				</if>
+				<if test="c.address != null and c.address !=''">
+					<bind name="c.address" value="'%' + c.address + '%'" />
+					and address like #{c.address}
+				</if>
+				<if test="c.phone != null and c.phone !=''">
+					<bind name="c.phone" value="'%' + c.phone + '%'" />
+					and phone like #{c.phone}
+				</if>
+				<if test="c.career != null and c.career !=''">
+					<bind name="c.career" value="'%' + c.career + '%'" />
+					and career like #{c.career}
+				</if>
+			</where>
+		</if>
+	</select>
+	<update id="updateCust">
+		update Customers
+		<if test="c != null">
+			<set>
+				<if test="c.custname != null and c.custname != ''">
+					custname=#{c.custname},
+				</if>
+				<if test="c.sex != null and c.sex != ''">
+					sex=#{c.sex},
+				</if>
+				<if test="c.address != null and c.address != ''">
+					address=#{c.address},
+				</if>
+				<if test="c.phone != null and c.phone != ''">
+					phone=#{c.phone},
+				</if>
+				<if test="c.career != null and c.career != ''">
+					career=#{c.career},
+				</if>
+			</set>
+		</if>
+		<where>
+			identity=#{identity}
+		</where>
+	</update>
+</mapper>

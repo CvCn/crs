@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjsxt.mapper.LoginLogsMapper">
+	<select id="selLoginLogsBy" resultType="loginlogs">
+		select * from loginlogs
+		<if test="login != null">
+		<where>
+			<if test="login.loginname != null and login.loginname != ''">
+				<bind name="login.loginname" value="'%' + login.loginname + '%'"/>
+				and loginname like #{login.loginname}
+			</if>
+			<if test="login.loginip != null and login.loginip != ''">
+				<bind name="login.loginip" value="'%' + login.loginip + '%'"/>
+				and loginip like #{login.loginip}
+			</if>
+			<if test="login.logintime != null">
+				and DATE_FORMAT(logintime,'%Y-%m-%d') = DATE_FORMAT(#{login.logintime},'%Y-%m-%d')
+			</if>
+		</where>
+		order by loginlogid desc
+		</if>
+		<if test="p != null">
+			limit #{p.start}, #{p.size}
+		</if>
+	</select>
+	<select id="loginLogsCount" resultType="int">
+		select count(*) from loginlogs
+		<if test="login != null">
+		<where>
+			<if test="login.loginname != null and login.loginname != ''">
+				<bind name="login.loginname" value="'%' + login.loginname + '%'"/>
+				and loginname like #{login.loginname}
+			</if>
+			<if test="login.loginip != null and login.loginip != ''">
+				<bind name="login.loginip" value="'%' + login.loginip + '%'"/>
+				and loginip like #{login.loginip}
+			</if>
+			<if test="login.logintime != null">
+				and DATE_FORMAT(logintime,'%Y-%m-%d') = DATE_FORMAT(#{login.logintime},'%Y-%m-%d')
+			</if>
+		</where>
+		</if>
+	</select>
+</mapper>

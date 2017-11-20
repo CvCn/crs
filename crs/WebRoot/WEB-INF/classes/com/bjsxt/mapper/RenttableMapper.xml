@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+
+<mapper namespace="com.bjsxt.mapper.RenttableMapper">
+<resultMap type="renttable" id="tmap">
+	<id property="tableid" column="tableid"/>
+	<result property="custid" column="custid"/>
+	<result property="carid" column="carid"/>
+	<association property="cust" select="com.bjsxt.mapper.CustMapper.selCustByIdentity" column="custid"></association>
+	<association property="car" select="com.bjsxt.mapper.CarMapper.selCarByNumber" column="carid"></association>
+</resultMap>
+	<select id="selRenttable" resultMap="tmap">
+		select * from renttable
+		<if test="r != null">
+			<where>
+				<if test="r.tableid != null">
+					<bind name="r.tableid" value="'%' + r.tableid + '%'"/>
+					and tableid like #{r.tableid}
+				</if>
+				<if test="r.imprest != null and r.imprest !=''">
+					<bind name="r.imprest" value="'%' + r.imprest + '%'"/>
+					and imprest like #{r.imprest}
+				</if>
+				<if test="r.shouldpayprice != null and r.shouldpayprice !=''">
+					<bind name="r.shouldpayprice" value="'%' + r.shouldpayprice + '%'"/>
+					and shouldpayprice like #{r.shouldpayprice}
+				</if>
+				<if test="r.price != null and r.price >= 0">
+					<bind name="r.price" value="'%' + r.price + '%'"/>
+					and price like #{r.price}
+				</if>
+				<if test="r.begindate != null">
+					and begindate = DATE_FORMAT(#{r.begindate},'%Y-%m-%d')
+				</if>
+				<if test="r.returndate != null">
+					and returndate = DATE_FORMAT(#{r.returndate},'%Y-%m-%d')
+				</if>
+				<if test="r.shouldreturndate != null">
+					and shouldreturndate = DATE_FORMAT(#{r.shouldreturndate},'%Y-%m-%d')
+				</if>
+				<if test="r.rentflag != null and r.rentflag !=''">
+					<bind name="r.rentflag" value="'%' + r.rentflag + '%'"/>
+					and rentflag like #{r.rentflag}
+				</if>
+				<if test="r.custid != null and r.custid !=''">
+					<bind name="r.custid" value="'%' + r.custid + '%'"/>
+					and custid like #{r.custid}
+				</if>
+				<if test="r.carid != null and r.carid !=''">
+					<bind name="r.carid" value="'%' + r.carid + '%'"/>
+					and carid like #{r.carid}
+				</if>
+				<if test="r.username != null and r.username !=''">
+					<bind name="r.username" value="'%' + r.username + '%'"/>
+					and username like #{r.username}
+				</if>
+			</where>
+		</if>
+		<if test="p != null">
+			limit #{p.start}, #{p.size}
+		</if>
+	</select>
+	<select id="renttableCount" resultType="int">
+		select count(*) from renttable
+		<if test="r != null">
+			<where>
+				<if test="r.tableid != null">
+					<bind name="r.tableid" value="'%' + r.tableid + '%'"/>
+					and tableid like #{r.tableid}
+				</if>
+				<if test="r.imprest != null and r.imprest !=''">
+					<bind name="r.imprest" value="'%' + r.imprest + '%'"/>
+					and imprest like #{r.imprest}
+				</if>
+				<if test="r.shouldpayprice != null and r.shouldpayprice !=''">
+					<bind name="r.shouldpayprice" value="'%' + r.shouldpayprice + '%'"/>
+					and shouldpayprice like #{r.shouldpayprice}
+				</if>
+				<if test="r.price != null and r.price >= 0">
+					<bind name="r.price" value="'%' + r.price + '%'"/>
+					and price like #{r.price}
+				</if>
+				<if test="r.begindate != null and r.begindate != ''">
+					and begindate = DATE_FORMAT(#{r.begindate},'%Y-%m-%d')
+				</if>
+				<if test="r.returndate != null and r.returndate != ''">
+					and returndate = DATE_FORMAT(#{r.returndate},'%Y-%m-%d')
+				</if>
+				<if test="r.shouldreturndate != null and r.shouldreturndate != ''">
+					and shouldreturndate = DATE_FORMAT(#{r.shouldreturndate},'%Y-%m-%d')
+				</if>
+				<if test="r.rentflag != null and r.rentflag !=''">
+					<bind name="r.rentflag" value="'%' + r.rentflag + '%'"/>
+					and rentflag like #{r.rentflag}
+				</if>
+				<if test="r.custid != null and r.custid !=''">
+					<bind name="r.custid" value="'%' + r.custid + '%'"/>
+					and custid like #{r.custid}
+				</if>
+				<if test="r.carid != null and r.carid !=''">
+					<bind name="r.carid" value="'%' + r.carid + '%'"/>
+					and carid like #{r.carid}
+				</if>
+				<if test="r.username != null and r.username !=''">
+					<bind name="r.username" value="'%' + r.username + '%'"/>
+					and username like #{r.username}
+				</if>
+			</where>
+		</if>
+	</select>
+	<update id="updateRenttable">
+		update renttable
+		<set>
+			<if test="returndate != null and returndate != ''">
+				returndate=#{returndate},
+			</if>
+			<if test="price != null and price >= 0">
+				price=#{price},
+			</if>
+			<if test="begindate != null and begindate != ''">
+				begindate=#{begindate},
+			</if>
+			<if test="shouldreturndate != null and shouldreturndate != ''">
+				shouldreturndate=#{shouldreturndate},
+			</if>
+			<if test="returndate != null and returndate != ''">
+				returndate=#{returndate},
+			</if>
+			<if test="rentflag != null and rentflag != ''">
+				rentflag=#{rentflag},
+			</if>
+		</set>
+		<where>
+			tableid=#{tableid}
+		</where>
+	</update>
+	
+	<select id="selRenttableBy" resultMap="tmap">
+		select * from renttable
+		<where>
+			<if test="tableid != null">
+				tableid=#{tableid}
+			</if>
+			<if test="date != null and findbydate != null">
+				<if test="findbydate == 'month'">
+					DATE_FORMAT(shouldreturndate,'%Y-%m') = DATE_FORMAT(#{date},'%Y-%m')
+				</if>
+				<if test="findbydate == 'day'">
+					shouldreturndate = DATE_FORMAT(#{date},'%Y-%m-%d')
+				</if>
+			</if>
+		</where>
+		and rentflag = '0'
+		<if test="p != null">
+			limit #{p.start}, #{p.size}
+		</if>
+	</select>
+</mapper>

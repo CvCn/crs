@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjsxt.mapper.RolesMapper">
+	<resultMap type="roles" id="rmap">
+		<id property="roleid" column="roleid" />
+		<result property="rolename" column="rolename" />
+		<collection property="menus"
+			select="com.bjsxt.mapper.MenusMapper.selMenus" column="{roleid=roleid, fatherid=fatherid}"></collection>
+		<collection property="funs" select="com.bjsxt.mapper.FunsMapper.selFuns"
+			column="roleid"></collection>
+	</resultMap>
+	<select id="selRoleBy" resultMap="rmap">
+		select r.*, 0 fatherid from roles r
+		<if test="r != null">
+			<where>
+				<if test="r.roleid != null and r.roleid >= 0">
+					and r.roleid like #{r.roleid}
+				</if>
+				<if test="r.rolename != null and r.rolename !=''">
+					and r.rolename like #{r.rolename}
+				</if>
+			</where>
+		</if>
+		<if test="p != null">
+			limit #{p.start}, #{p.size}
+		</if>
+	</select>
+	<select id="roleCount" resultType="int">
+		select count(*) from roles r
+		<if test="r != null">
+			<where>
+				<if test="r.roleid != null and r.roleid >= 0">
+					and r.roleid like #{r.roleid}
+				</if>
+				<if test="r.rolename != null and r.rolename !=''">
+					and r.rolename like #{r.rolename}
+				</if>
+			</where>
+		</if>
+	</select>
+</mapper>

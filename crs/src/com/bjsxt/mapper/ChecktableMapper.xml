@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjsxt.mapper.ChecktableMapper">
+<resultMap type="checktable" id="tmap">
+	<id property="checkid" column="checkid"/>
+	<result property="rentid" column="rentid"/>
+	<association property="renttable" select="com.bjsxt.mapper.RenttableMapper.selRenttableByTableid" column="rentid"></association>
+</resultMap>
+	<select id="selChecktable" resultMap="tmap">
+		select * from checktable
+		<if test="c != null">
+		<where>
+			<if test="c.checkid != null and c.checkid >= 0">
+				<bind name="c.checkid" value="'%' + c.checkid + '%'"/>
+				and checkid like #{c.checkid}
+			</if>
+			<if test="c.checkdate != null and c.checkdate !=''">
+				and checkdate = DATE_FORMAT(#{c.checkdate},'%Y-%m-%d')
+			</if>
+			<if test="c.checkuser != null and c.checkuser !=''">
+				<bind name="c.checkuser" value="'%' + c.checkuser + '%'"/>
+				and checkuser like #{c.checkuser}
+			</if>
+			<if test="c.rentid != null and c.rentid !=''">
+				<bind name="c.rentid" value="'%' + c.rentid + '%'"/>
+				and rentid like #{c.rentid}
+			</if>
+		</where>
+		</if>
+		<if test="p != null">
+			limit #{p.start}, #{p.size}
+		</if>
+	</select>
+	<select id="checktableCount" resultType="int">
+		select count(*) from checktable
+		<if test="c != null">
+		<where>
+			<if test="c.checkid != null and c.checkid >= 0">
+				<bind name="c.checkid" value="'%' + c.checkid + '%'"/>
+				and checkid like #{c.checkid}
+			</if>
+			<if test="c.checkdate != null and c.checkdate !=''">
+				and checkdate = DATE_FORMAT(#{c.checkdate},'%Y-%m-%d')
+			</if>
+			<if test="c.checkuser != null and c.checkuser !=''">
+				<bind name="c.checkuser" value="'%' + c.checkuser + '%'"/>
+				and checkuser like #{c.checkuser}
+			</if>
+			<if test="c.rentid != null and c.rentid !=''">
+				<bind name="c.rentid" value="'%' + c.rentid + '%'"/>
+				and rentid like #{c.rentid}
+			</if>
+		</where>
+		</if>
+	</select>
+	<update id="updateChecktable">
+		update checktable
+		<set>
+			<if test="problem != null and problem != ''">
+				problem=#{problem},
+			</if>
+			<if test="paying != null and paying != ''">
+				paying=#{paying},
+			</if>
+			<if test="field != null and field != ''">
+				field=#{field},
+			</if>
+		</set>
+		<where>
+			checkid=#{checkid}
+		</where>
+	</update>
+</mapper>

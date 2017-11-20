@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjsxt.mapper.OperationLogsMapper">
+	<select id="selOperationLogsBy" resultType="operationlogs">
+		select * from operation_logs
+		<if test="o != null">
+		<where>
+			<if test="o.username != null and o.username != ''">
+				<bind name="o.username" value="'%' + o.username + '%'"/>
+				and username like #{o.username}
+			</if>
+			<if test="o.action != null and o.action != ''">
+				<bind name="o.action" value="'%' + o.action + '%'"/>
+				and action like #{o.action}
+			</if>
+			<if test="o.actiontime != null">
+				and DATE_FORMAT(actiontime,'%Y-%m-%d') = DATE_FORMAT(#{o.actiontime},'%Y-%m-%d')
+			</if>
+		</where>
+		order by id desc
+		</if>
+		<if test="p != null">
+			limit #{p.start}, #{p.size}
+		</if>
+	</select>
+	<select id="operationLogsCount" resultType="int">
+		select count(*) from operation_logs
+		<if test="o != null">
+		<where>
+			<if test="o.username != null and o.username != ''">
+				<bind name="o.username" value="'%' + o.username + '%'"/>
+				and username like #{o.username}
+			</if>
+			<if test="o.action != null and o.action != ''">
+				<bind name="o.action" value="'%' + o.action + '%'"/>
+				and action like #{o.action}
+			</if>
+			<if test="o.actiontime != null">
+				and DATE_FORMAT(actiontime,'%Y-%m-%d') = DATE_FORMAT(#{o.actiontime},'%Y-%m-%d')
+			</if>
+		</where>
+		</if>
+	</select>
+</mapper>

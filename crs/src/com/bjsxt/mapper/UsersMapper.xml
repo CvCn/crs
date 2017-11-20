@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+
+<mapper namespace="com.bjsxt.mapper.UsersMapper">
+	<resultMap type="users" id="tmap">
+		<id property="username" column="username"/>
+		<result property="roleid" column="roleid"/>
+		<collection property="roles" select="com.bjsxt.mapper.RolesMapper.selRoleBy" column="r.roleid=roleid"></collection>
+	</resultMap>
+	<select id="selUserBy" resultMap="tmap">
+		select * from users
+		<if test="u != null">
+		<where>
+			<if test="u.username != null and u.username !=''">
+				<bind name="u.username" value="'%' + u.username + '%'"/>
+				and username like #{u.username}
+			</if>
+			<if test="u.identity != null and u.identity !=''">
+				<bind name="u.identity" value="'%' + u.identity + '%'"/>
+				and identity like #{u.identity}
+			</if>
+			<if test="u.fullname != null and u.fullname !=''">
+				<bind name="u.fullname" value="'%' + u.fullname + '%'"/>
+				and fullname like #{u.fullname}
+			</if>
+			<if test="u.sex != null and u.sex !=''">
+				<bind name="u.sex" value="'%' + u.sex + '%'"/>
+				and sex like #{u.sex}
+			</if>
+			<if test="u.address != null and u.address !=''">
+				<bind name="u.address" value="'%' + u.address + '%'"/>
+				and address like #{u.address}
+			</if>
+			<if test="u.phone != null and u.phone !=''">
+				<bind name="u.phone" value="'%' + u.phone + '%'"/>
+				and phone like #{u.phone}
+			</if>
+			<if test="u.roleid != null and u.roleid >= 0">
+				<bind name="u.roleid" value="'%' + u.roleid + '%'"/>
+				and roleid like #{u.roleid}
+			</if>
+			<if test="u.userpwd != null and u.userpwd !=''">
+				<bind name="u.userpwd" value="'%' + u.userpwd + '%'"/>
+				and username like #{u.userpwd}
+			</if>
+			<if test="u.position != null and u.position !=''">
+				<bind name="u.position" value="'%' + u.position + '%'"/>
+				and position like #{u.position}
+			</if>
+		</where>
+		</if>
+		<if test="p != null">
+			limit #{p.start}, #{p.size}
+		</if>
+	</select>
+	<select id="userCount" resultType="int">
+		select count(*) from users
+		<if test="u != null">
+		<where>
+			<if test="u.username != null and u.username !=''">
+				<bind name="u.username" value="'%' + u.username + '%'"/>
+				and username like #{u.username}
+			</if>
+			<if test="u.identity != null and u.identity !=''">
+				<bind name="u.identity" value="'%' + u.identity + '%'"/>
+				and identity like #{u.identity}
+			</if>
+			<if test="u.fullname != null and u.fullname !=''">
+				<bind name="u.fullname" value="'%' + u.fullname + '%'"/>
+				and fullname like #{u.fullname}
+			</if>
+			<if test="u.sex != null and u.sex !=''">
+				<bind name="u.sex" value="'%' + u.sex + '%'"/>
+				and sex like #{u.sex}
+			</if>
+			<if test="u.address != null and u.address !=''">
+				<bind name="u.address" value="'%' + u.address + '%'"/>
+				and address like #{u.address}
+			</if>
+			<if test="u.phone != null and u.phone !=''">
+				<bind name="u.phone" value="'%' + u.phone + '%'"/>
+				and phone like #{u.phone}
+			</if>
+			<if test="u.roleid >= 0">
+				<bind name="u.roleid" value="'%' + u.roleid + '%'"/>
+				and roleid like #{u.roleid}
+			</if>
+			<if test="u.userpwd != null and u.userpwd !=''">
+				<bind name="u.userpwd" value="'%' + u.userpwd + '%'"/>
+				and username like #{u.userpwd}
+			</if>
+			<if test="u.position != null and u.position !=''">
+				<bind name="u.position" value="'%' + u.position + '%'"/>
+				and position like #{u.position}
+			</if>
+		</where>
+		</if>
+	</select>
+	<update id="updateUser">
+		update users
+		<set>
+			<if test="u.identity != null and u.identity != ''">
+				identity=#{u.identity},
+			</if>
+			<if test="u.fullname != null and u.fullname != ''">
+				fullname=#{u.fullname},
+			</if>
+			<if test="u.sex != null and u.sex != ''">
+				 sex=#{u.sex},
+			</if>
+			<if test="u.address != null and u.address != ''">
+				address=#{u.address},
+			</if>
+			<if test="u.phone != null and u.phone != ''">
+				phone=#{u.phone},
+			</if>
+			<if test="u.roleid != null and u.roleid >= 0">
+				roleid=#{u.roleid},
+			</if>
+			<if test="u.position != null and u.position != ''">
+				position=#{u.position},
+			</if>
+		</set>
+		<where>
+			username=#{username}
+		</where>
+	</update>
+</mapper>
